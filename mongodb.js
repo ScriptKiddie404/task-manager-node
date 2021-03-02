@@ -26,6 +26,10 @@ MongoClient.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true }, (e
     // 4) creamos la base de datos:
     const db = client.db(databaseName);
 
+    // // Para buscar por id:
+    // const ObjectID = require('mongodb');
+    // db.collection('users').findOne({_id: new ObjectID('a87d08as7d08as')})...etc
+
 
 
 });

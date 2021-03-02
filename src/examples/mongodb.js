@@ -35,74 +35,107 @@ MongoClient.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true }, (e
 });
 
 
-    //Realizar una consulta:
-    // db.collection('users').findOne({ name: 'Diana' }, (error, result) => {
-    //     console.log(result);
-    // });
+// Realizar una consulta:
+db.collection('users').findOne({ name: 'Diana' }, (error, result) => {
+    console.log(result);
+});
 
-    // // Realizar una consulta que devuelva muchos documentos bajo 1 criterio.
+// Realizar una consulta que devuelva muchos documentos bajo 1 criterio.
 
-    // db.collection('users').find({ age: 11 }).toArray((error, result) => {
-    //     console.log(result);
-    // });
+db.collection('users').find({ age: 11 }).toArray((error, result) => {
+    console.log(result);
+});
 
-    // // Devolver absolutamnente todo:
-    // db.collection('users').find({}).toArray((error, result) => {
-    //     console.log(result);
-    // });
+// Devolver absolutamnente todo:
+db.collection('users').find({}).toArray((error, result) => {
+    console.log(result);
+});
 
-    // db.collection('users').insertOne({
-    //     name: 'John Doe',
-    //     age: 18
-    // }, (error, result) => {
-    //     if (error) {
-    //         return console.log(errorColor(' Unable to insert user, you stayed: 🤡 '));
-    //     }
-    //     console.log(result.ops);
-    // });
+db.collection('users').insertOne({
+    name: 'John Doe',
+    age: 18
+}, (error, result) => {
+    if (error) {
+        return console.log(errorColor(' Unable to insert user, you stayed: 🤡 '));
+    }
+    console.log(result.ops);
+});
 
-    // Un ejemplo de insertMany:
-    // db.collection('users').insertMany([
-    //     {
-    //         name: "Fernando",
-    //         age: 11
-    //     },
-    //     {
-    //         name: "Diana",
-    //         age: 30
-    //     },
-    //     {
-    //         name: "Jaja",
-    //         age: 70
-    //     }
-    // ], (error, result) => {
-    //     if (error) {
-    //         return console.log(errorColor(' Unable to insert user, you stayed: 🤡 '));
-    //     }
-    //     console.log(okColor(`${result.insertedCount} documents successfully inserted 😍 `));
-    // });
+// Un ejemplo de insertMany:
+db.collection('users').insertMany([
+    {
+        name: "Fernando",
+        age: 11
+    },
+    {
+        name: "Diana",
+        age: 30
+    },
+    {
+        name: "Jaja",
+        age: 70
+    }
+], (error, result) => {
+    if (error) {
+        return console.log(errorColor(' Unable to insert user, you stayed: 🤡 '));
+    }
+    console.log(okColor(`${result.insertedCount} documents successfully inserted 😍 `));
+});
 
 
 
-    // db.collection('tasks').insertMany([
-    //     {
-    //         description: 'This is some random description #1',
-    //         completed: true
-    //     },
-    //     {
-    //         description: 'This is some random description #2',
-    //         completed: true
-    //     },
-    //     {
-    //         description: 'This is some random description #3',
-    //         completed: true
-    //     }
-    // ], (error, result) => {
-    //     if (error) {
-    //         return console.log(errorColor(' Unable to insert tasks, you stayed: 🤡 '))
-    //     }
+db.collection('tasks').insertMany([
+    {
+        description: 'This is some random description #1',
+        completed: true
+    },
+    {
+        description: 'This is some random description #2',
+        completed: true
+    },
+    {
+        description: 'This is some random description #3',
+        completed: true
+    }
+], (error, result) => {
+    if (error) {
+        return console.log(errorColor(' Unable to insert tasks, you stayed: 🤡 '))
+    }
 
-    //     console.log(okColor(`${result.insertedCount} documents successfully inserted 😍 `))
-    //     console.log(okColor(result.ops));
+    console.log(okColor(`${result.insertedCount} documents successfully inserted 😍 `))
+    console.log(okColor(result.ops));
 
-    // });
+});
+
+
+
+// Ejemplo creando una instancia del modelo:
+const yo = new User({
+    name: 'Raymond',
+    email: 'jejeputos@gmail.com',
+    password: 'pedro12password',
+    age: 22
+});
+
+// Guardar dicha instancia en la DB (prmise version)
+yo.save().then(() => {
+    console.log(yo);
+}).catch(error => {
+    console.log(error);
+});
+
+
+// Creando una instancia de dicha tarea:
+const washDishes = new Task({
+    description: "Wash dishes, lol?",
+    completed: false
+});
+
+// Guardamos en la base:
+washDishes.save().then(() => {
+    console.log(washDishes)
+}).catch(error => {
+    console.log(error);
+});
+
+////////// NEXT → 7

@@ -7,7 +7,7 @@ const errorColor = chalk.bgRedBright.black;
 // 1) Importamos mongodb (previamente instalado) -> npm i mongodb
 // Alternativa: const mongodb = require('mongodb')
 // Luego → const MongoClient = mongodb.MongoClient:
-const { MongoClient } = require('mongodb'); 
+const { MongoClient } = require('mongodb');
 
 // 2) Definimos los datos que vamos a utilizar
 const URL = 'mongodb://localhost:27017';
@@ -17,11 +17,36 @@ const databaseName = 'task-manager';
 // Parámetros: (URL, objecto, callback)
 MongoClient.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true }, (error, client) => {
 
+    if (error) {
+        throw error;
+    }
+
     console.log(okColor(" Connected correctly! 😀 "));
 
     // 4) creamos la base de datos:
     const db = client.db(databaseName);
-    // 5) Crear una colecction:
+
+
+
+});
+
+
+    //Realizar una consulta:
+    // db.collection('users').findOne({ name: 'Diana' }, (error, result) => {
+    //     console.log(result);
+    // });
+
+    // // Realizar una consulta que devuelva muchos documentos bajo 1 criterio.
+
+    // db.collection('users').find({ age: 11 }).toArray((error, result) => {
+    //     console.log(result);
+    // });
+
+    // // Devolver absolutamnente todo:
+    // db.collection('users').find({}).toArray((error, result) => {
+    //     console.log(result);
+    // });
+
     // db.collection('users').insertOne({
     //     name: 'John Doe',
     //     age: 18
@@ -77,6 +102,3 @@ MongoClient.connect(URL, { useNewUrlParser: true, useUnifiedTopology: true }, (e
     //     console.log(okColor(result.ops));
 
     // });
-
-
-});

@@ -17,16 +17,38 @@ const User = mongoose.model('User', {
 });
 
 // Ejemplo creando una instancia del modelo:
-const yo = new User({
-    name: 'Fernando',
-    age: 22
-});
+// const yo = new User({
+//     name: 'Fernando',
+//     age: 22
+// });
 
-// Guardar dicha instancia en la DB (prmise version)
-yo.save().then(() => {
-    console.log(yo);
-}).catch(error => {
-    console.log(error);
-});
+// // Guardar dicha instancia en la DB (prmise version)
+// yo.save().then(() => {
+//     console.log(yo);
+// }).catch(error => {
+//     console.log(error);
+// });
 
-//////////// NEXT → 3
+// const Task = mongoose.model('Task', {
+//     description: {
+//         type: String
+//     },
+//     completed: {
+//         type: Boolean
+//     }
+// });
+
+// // Creando una instancia de dicha tarea:
+// const washDishes = new Task({
+//     description: "Wash dishes, lol?",
+//     completed: false
+// });
+
+// // Guardamos en la base:
+// washDishes.save().then(() => {
+//     console.log(washDishes)
+// }).catch(error => {
+//     console.log(error);
+// });
+
+//////////// NEXT → 4

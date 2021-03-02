@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 // Importing the vlaidator instance:
 const validator = require('validator');
-
 // Making a connection
 mongoose.connect('mongodb://localhost:27017/task-manager-api', {
     useNewUrlParser: true,
@@ -31,6 +30,9 @@ const User = mongoose.model('User', {
         type: Number
     }
 });
+
+
+
 
 // // Ejemplo creando una instancia del modelo:
 // const yo = new User({

@@ -4,15 +4,14 @@
   "description": "A small app to practices node.js and mongoDB",
   "main": "index.js",
   "scripts": {
-    "start": "node mongodb.js",
-    "dev": "nodemon mongodb.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.0",
-    "mongodb": "^3.6.4"
+    "mongodb": "^3.6.4",
+    "mongoose": "^5.11.18"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"

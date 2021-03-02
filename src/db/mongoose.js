@@ -1,24 +1,41 @@
 const mongoose = require('mongoose');
+// Importing the vlaidator instance:
+const validator = require('validator');
 
 // Making a connection
 mongoose.connect('mongodb://localhost:27017/task-manager-api', {
     useNewUrlParser: true,
-    useCreateIndex: true
+    useCreateIndex: true,
+    useUnifiedTopology: true
 });
+
+
 
 // Crear el modelo de usuario:
 const User = mongoose.model('User', {
     name: {
-        type: String
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true,
+        validate(value) {
+            if (!validator.isEmail(value)) {
+                throw new Error('Email is invalid');
+            }
+        }
+
     },
     age: {
         type: Number
     }
 });
 
-// Ejemplo creando una instancia del modelo:
+// // Ejemplo creando una instancia del modelo:
 // const yo = new User({
-//     name: 'Fernando',
+//     name: 'Guadalupe',
+//     email: "perra@gmail.com",
 //     age: 22
 // });
 
@@ -51,4 +68,4 @@ const User = mongoose.model('User', {
 //     console.log(error);
 // });
 
-//////////// NEXT → 4
+//////////// NEXT → 5

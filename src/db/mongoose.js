@@ -9,16 +9,31 @@ mongoose.connect('mongodb://localhost:27017/task-manager-api', {
 });
 
 
+// Crear el modelo task:
+const Task = mongoose.model('Task', {
+    description: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    completed: {
+        type: Boolean,
+        default: false,
+    }
+});
 
 // Crear el modelo de usuario:
 const User = mongoose.model('User', {
     name: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     email: {
         type: String,
         required: true,
+        trim: true,
+        lowercase: true,
         validate(value) {
             if (!validator.isEmail(value)) {
                 throw new Error('Email is invalid');
@@ -26,8 +41,25 @@ const User = mongoose.model('User', {
         }
 
     },
+    password: {
+        type: String,
+        required: true,
+        trim: true,
+        minLength: 6,
+        validate(value) {
+            if (validator.contains(value.toLowerCase(), 'password')) {
+                throw new Error(`'The password must not contains the word \"password\"`);
+            }
+        }
+    },
     age: {
-        type: Number
+        type: Number,
+        default: 0,
+        validate(value) {
+            if (value < 0) {
+                throw new Error('Age must be a positive number.');
+            }
+        }
     }
 });
 
@@ -36,8 +68,9 @@ const User = mongoose.model('User', {
 
 // // Ejemplo creando una instancia del modelo:
 // const yo = new User({
-//     name: 'Guadalupe',
-//     email: "perra@gmail.com",
+//     name: 'Raymond',
+//     email: 'jejeputos@gmail.com',
+//     password: 'pedro12password',
 //     age: 22
 // });
 
@@ -48,14 +81,6 @@ const User = mongoose.model('User', {
 //     console.log(error);
 // });
 
-// const Task = mongoose.model('Task', {
-//     description: {
-//         type: String
-//     },
-//     completed: {
-//         type: Boolean
-//     }
-// });
 
 // // Creando una instancia de dicha tarea:
 // const washDishes = new Task({
@@ -70,4 +95,4 @@ const User = mongoose.model('User', {
 //     console.log(error);
 // });
 
-//////////// NEXT → 5
+//////////// NEXT → 7

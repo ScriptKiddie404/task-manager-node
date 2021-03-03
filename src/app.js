@@ -48,6 +48,36 @@ app.get('/users/:id', async (req, res) => {
     }
 });
 
+app.patch('/users/:id', async (req, res) => {
+    const { id } = req.params;
+    /*
+        We need to make a validation for the possible updates:
+        1) We need to get all the keys from request object.
+        2) Now we need to iterate over updates and compare if EVERY single update it's
+        contained in allowed updates array.
+        3) If any of this values doesn't appear in allowed updates array, the validOperation const
+        it's going to be false, otherwise, the value it's going to be true.
+        4) Now we use the valid operation const to make a evaluation and retrieve error if it's neccesary.
+    */
+    const allowedUpdates = ['name', 'age', 'password', 'email'];
+    const updates = Object.keys(req.body);
+    const isValidOperation = updates.every(update => allowedUpdates.includes(update));
+
+    if (!isValidOperation) {
+        return res.status(400).send({ error: 'Invalid update!' });
+    }
+
+    try {
+        const user = await User.findByIdAndUpdate(id, req.body, { new: true, runValidators: true, useFindAndModify: false });
+        if (!user) {
+            return res.status(404).send({ error: `There is no element with id: ${id}` });
+        }
+        res.status(200).send(user);
+    } catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+});
+
 app.post('/tasks', async (req, res) => {
     const task = new Task(req.body);
     try {

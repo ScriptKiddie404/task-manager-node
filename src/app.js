@@ -139,4 +139,17 @@ app.patch('/tasks/:id', async (req, res) => {
 
 });
 
+app.delete('/tasks/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deletedTask = await Task.findByIdAndDelete(id);
+        if (!deletedTask) {
+            return res.status(404).send({ error: `There is no task with id: ${id}` });
+        }
+        res.status(200).send(deletedTask);
+    } catch (error) {
+        res.status(500).send({ error: error.message });
+    }
+});
+
 app.listen(port, () => console.log(`Listening on port ${port}`));

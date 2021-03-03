@@ -49,16 +49,8 @@ app.get('/users/:id', async (req, res) => {
 });
 
 app.patch('/users/:id', async (req, res) => {
+    
     const { id } = req.params;
-    /*
-        We need to make a validation for the possible updates:
-        1) We need to get all the keys from request object.
-        2) Now we need to iterate over updates and compare if EVERY single update it's
-        contained in allowed updates array.
-        3) If any of this values doesn't appear in allowed updates array, the validOperation const
-        it's going to be false, otherwise, the value it's going to be true.
-        4) Now we use the valid operation const to make a evaluation and retrieve error if it's neccesary.
-    */
     const allowedUpdates = ['name', 'age', 'password', 'email'];
     const updates = Object.keys(req.body);
     const isValidOperation = updates.every(update => allowedUpdates.includes(update));
@@ -98,6 +90,7 @@ app.get('/tasks', async (req, res) => {
 });
 
 app.get('/tasks/:id', async (req, res) => {
+
     const { id } = req.params;
     try {
         const task = await Task.findById(id);
@@ -108,6 +101,29 @@ app.get('/tasks/:id', async (req, res) => {
     } catch (error) {
         res.status(500).send({ error: error.message });
     }
+});
+
+app.patch('/tasks/:id', async (req, res) => {
+
+    const { id } = req.params;
+    const updates = Object.keys(req.body);
+    const allowedUpdates = ['description', 'completed'];
+    const isValidUpdate = updates.every(update => allowedUpdates.includes(update));
+
+    if (!isValidUpdate) {
+        return res.status(400).send({ error: 'Invalid update!' });
+    }
+
+    try {
+        const task = await Task.findByIdAndUpdate(id, req.body, { new: true, runValidators: true, useFindAndModify: false });
+        if (!task) {
+            return res.status(404).send({ error: `There is not element with id: ${id}` });
+        }
+        res.status(200).send(task);
+    } catch (error) {
+        res.status(400).send({ error: error.message });
+    }
+
 });
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

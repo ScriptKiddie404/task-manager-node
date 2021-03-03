@@ -160,3 +160,18 @@ foo().then(result => {
 }).catch(error => {
     console.log(error);
 })
+
+
+// Async bcryt example
+
+const encriptar = async (passowrd) => {
+    const hashedPassword = await bcrypt.hash(passowrd, 8);
+    const isCorrectPassword = bcrypt.compare(passowrd, hashedPassword);
+    console.log(`La contraseña introducida fue: ${passowrd}`);
+    console.log(`El hash generado fue: ${hashedPassword}`);
+    if (isCorrectPassword) {
+        console.log("Las contraseñas coinciden");
+    }
+}
+
+encriptar("01011999");

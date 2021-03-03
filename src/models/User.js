@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
+const { Schema } = mongoose;
 // Importing the validator instance:
 const validator = require('validator');
+// Importing bcrypt to hash
+const bcrypt = require('bcryptjs');
 
-const User = mongoose.model('User', {
+const UserSchema = new Schema({
     name: {
         type: String,
         required: true,
@@ -41,5 +44,21 @@ const User = mongoose.model('User', {
         }
     }
 });
+
+// Definición del Middleware para el schema:
+//|||||||||||||||||||||||||||||||||||||||||//
+// Debemos usar función normal (usaremos this)
+// También debemos asegurarnos
+UserSchema.pre('save', async function () {
+
+    if (this.isModified('password')) {
+        const ROUNDS_NUMBER = 8;
+        this.password = await bcrypt.hash(this.password, ROUNDS_NUMBER);
+    }
+});
+
+
+// Convertir schema a modelo
+const User = mongoose.model('User', UserSchema);
 
 module.exports = User;

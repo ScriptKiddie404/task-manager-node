@@ -47,10 +47,20 @@ router.patch('/users/:id', async (req, res) => {
     }
 
     try {
-        const user = await User.findByIdAndUpdate(id, req.body, { new: true, runValidators: true, useFindAndModify: false });
+        // const user = await User.findByIdAndUpdate(id, req.body, { new: true, runValidators: true, useFindAndModify: false });
+
+        // 1.- Conseguir el usuario por su ID
+        // 2.- Modifiar los campos pasados en el body
+        // 3.- Guardar el usuario en la bd
+        const user = await User.findById(id); // #1
+
         if (!user) {
             return res.status(404).send({ error: `There is no element with id: ${id}` });
         }
+
+        updates.forEach(update => user[update] = req.body[update]); //#2
+        await user.save(); //#3
+
         res.status(200).send(user);
     } catch (error) {
         res.status(400).send({ error: error.message });

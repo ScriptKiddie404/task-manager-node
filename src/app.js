@@ -49,7 +49,7 @@ app.get('/users/:id', async (req, res) => {
 });
 
 app.patch('/users/:id', async (req, res) => {
-    
+
     const { id } = req.params;
     const allowedUpdates = ['name', 'age', 'password', 'email'];
     const updates = Object.keys(req.body);
@@ -67,6 +67,19 @@ app.patch('/users/:id', async (req, res) => {
         res.status(200).send(user);
     } catch (error) {
         res.status(400).send({ error: error.message });
+    }
+});
+
+app.delete('/users/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const deletedUser = await User.findByIdAndDelete(id);
+        if (!deletedUser) {
+            return res.status(404).send({ error: `There is no element with id: ${id}` });
+        }
+        res.status(200).send(deletedUser);
+    } catch (error) {
+        res.status(500).send({ error: error.message });
     }
 });
 

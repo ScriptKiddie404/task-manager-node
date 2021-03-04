@@ -1,8 +1,7 @@
 const mongoose = require('mongoose');
-// Importing the vlaidator instance:
-const validator = require('validator');
+const { Schema } = mongoose;
 
-const Task = mongoose.model('Task', {
+const TaskSchema = new Schema({
     description: {
         type: String,
         required: true,
@@ -13,5 +12,7 @@ const Task = mongoose.model('Task', {
         default: false,
     }
 });
+
+const Task = mongoose.model('Task', TaskSchema);
 
 module.exports = Task;

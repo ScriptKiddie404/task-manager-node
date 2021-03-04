@@ -47,11 +47,18 @@ router.patch('/tasks/:id', async (req, res) => {
     }
 
     try {
-        const task = await Task.findByIdAndUpdate(id, req.body, { new: true, runValidators: true, useFindAndModify: false });
+        // const task = await Task.findByIdAndUpdate(id, req.body, { new: true, runValidators: true, useFindAndModify: false });
+
+        const task = await Task.findById(id);
+
         if (!task) {
             return res.status(404).send({ error: `There is not element with id: ${id}` });
         }
+
+        updates.forEach(update => task[update] = req.body[update]);
+        await task.save();
         res.status(200).send(task);
+
     } catch (error) {
         res.status(400).send({ error: error.message });
     }

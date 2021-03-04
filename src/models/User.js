@@ -15,6 +15,7 @@ const UserSchema = new Schema({
         type: String,
         required: true,
         trim: true,
+        unique: true,
         lowercase: true,
         validate(value) {
             if (!validator.isEmail(value)) {
@@ -57,6 +58,23 @@ UserSchema.pre('save', async function () {
     }
 });
 
+// Creamos una función middleware para verificar las credenciales
+UserSchema.statics.findByCredentials = async (email, password) => {
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        throw new Error('Unable to login');
+    }
+
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+        throw new Error('Unable to login');
+    }
+
+    return user;
+
+}
 
 // Convertir schema a modelo
 const User = mongoose.model('User', UserSchema);

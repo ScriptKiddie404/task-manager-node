@@ -14,7 +14,7 @@ const taskRouter = require('./routers/taskRouter');
 // =================================================== //
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan('tiny')); 
+app.use(morgan('tiny'));
 // =================================================== //
 // =================== ROUTERS ======================= //
 // =================================================== //

@@ -4,6 +4,8 @@ const { Schema } = mongoose;
 const validator = require('validator');
 // Importing bcrypt to hash
 const bcrypt = require('bcryptjs');
+// Importamos librería para JWT:
+const jwt = require('jsonwebtoken');
 
 const UserSchema = new Schema({
     name: {
@@ -43,11 +45,18 @@ const UserSchema = new Schema({
                 throw new Error('Age must be a positive number.');
             }
         }
-    }
+    },
+    tokens: [{
+        token: {
+            type: String,
+            required: true
+        }
+    }]
 });
 
+// ==========================================
 // Definición del Middleware para el schema:
-//|||||||||||||||||||||||||||||||||||||||||//
+// ==========================================
 // Debemos usar función normal (usaremos this)
 // También debemos asegurarnos
 UserSchema.pre('save', async function () {
@@ -57,6 +66,7 @@ UserSchema.pre('save', async function () {
         this.password = await bcrypt.hash(this.password, ROUNDS_NUMBER);
     }
 });
+
 
 // Creamos una función middleware para verificar las credenciales
 UserSchema.statics.findByCredentials = async (email, password) => {
@@ -74,6 +84,17 @@ UserSchema.statics.findByCredentials = async (email, password) => {
 
     return user;
 
+}
+
+// Generar un token, en vez de usar "statics" usamos "methods":
+UserSchema.methods.generateAuthToken = async function () {
+    const user = this; //Para fines de legibilidad.
+    // Generamos el token:
+    const token = jwt.sign({ _id: user._id.toString() }, 'dummyscret');
+    // Guradamos el token en la base de datos:
+    user.tokens = user.tokens.concat({ token });
+    await user.save();
+    return token;
 }
 
 // Convertir schema a modelo

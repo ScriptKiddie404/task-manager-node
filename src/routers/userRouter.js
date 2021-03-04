@@ -6,8 +6,8 @@ router.post('/users', async (req, res) => {
     const user = new User(req.body);
     try {
         await user.save();
-        res.status(201).send(user);
-
+        const token = await user.generateAuthToken();
+        res.status(201).send({ user, token });
     } catch (error) {
         res.status(400).send({ error: error.message });
     }
@@ -17,7 +17,13 @@ router.post('/users/login', async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findByCredentials(email, password);
-        res.status(200).send(user);
+
+        // Generamos un toke para el usuario:
+        // IMPORTANTE!: Notar que usamos "user" y no "User", esto es debido a que cada instancia debe tener un token diferente
+        // Dentro del equema debemos definir este método con "methods" y no con "statics".
+        const token = await user.generateAuthToken();
+
+        res.status(200).send({ user, token });
     } catch (error) {
         res.status(400).send();
     }

@@ -1,7 +1,9 @@
 const express = require('express');
 const User = require('../models/User');
 const router = new express.Router();
+const auth = require('../middleware/auth');
 
+// Crear usuario
 router.post('/users', async (req, res) => {
     const user = new User(req.body);
     try {
@@ -13,12 +15,13 @@ router.post('/users', async (req, res) => {
     }
 });
 
+// Realizar login
 router.post('/users/login', async (req, res) => {
     try {
         const { email, password } = req.body;
         const user = await User.findByCredentials(email, password);
 
-        // Generamos un toke para el usuario:
+        // Generamos un token para el usuario:
         // IMPORTANTE!: Notar que usamos "user" y no "User", esto es debido a que cada instancia debe tener un token diferente
         // Dentro del equema debemos definir este método con "methods" y no con "statics".
         const token = await user.generateAuthToken();
@@ -29,15 +32,21 @@ router.post('/users/login', async (req, res) => {
     }
 });
 
-router.get('/users', async (req, res) => {
-    const users = await User.find({});
-    try {
-        res.status(200).send(users);
-    } catch (error) {
-        res.status(500).send({ error: error.message });
-    }
+// Obtener la infromación del propio usuario:
+router.get('/users/me', auth, async (req, res) => {
+    res.send(req.user);
+    // res.send(req.user);
+    // const users = await User.find({});
+    // try {
+    //     res.status(200).send(users);
+    // } catch (error) {
+    //     res.status(500).send({ error: error.message });
+    // }
 });
 
+
+
+// Obtener usuario por ID
 router.get('/users/:id', async (req, res) => {
     const { id } = req.params;
     const user = await User.findById(id);
@@ -51,6 +60,7 @@ router.get('/users/:id', async (req, res) => {
     }
 });
 
+// Actualizar un determinado usuario
 router.patch('/users/:id', async (req, res) => {
 
     const { id } = req.params;
@@ -83,6 +93,7 @@ router.patch('/users/:id', async (req, res) => {
     }
 });
 
+// Eliminar un usuario
 router.delete('/users/:id', async (req, res) => {
     const { id } = req.params;
     try {

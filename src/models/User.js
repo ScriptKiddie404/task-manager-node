@@ -97,6 +97,17 @@ UserSchema.methods.generateAuthToken = async function () {
     return token;
 }
 
+// Limitamos la información que vamos a envíar:
+UserSchema.methods.getPublicProfile = function () {
+    const user = this;
+    const userObject = user.toObject(); //Converimos a objeto JS.
+    // Elimnamos la información que no necesita estar viendo el usuario:
+    delete userObject.password;
+    delete userObject.tokens;
+
+    return userObject;
+}
+
 // Convertir schema a modelo
 const User = mongoose.model('User', UserSchema);
 

@@ -19,6 +19,8 @@ const auth = async (req, res, next) => {
 
         // Guardamos el usuario en el request para manipularlo después:
         req.user = user;
+        // También guardamos el token:
+        req.token = token;
         // Una vez autenticados finalizamos el middleware y damos acceso a la ruta solicitada:
         next();
     } catch (error) {

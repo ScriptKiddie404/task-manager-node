@@ -30,6 +30,7 @@ router.get('/tasks', async (req, res) => {
 router.get('/tasks/:id', async (req, res) => {
 
     const { id } = req.params;
+
     try {
         const task = await Task.findById(id);
         if (!task) {

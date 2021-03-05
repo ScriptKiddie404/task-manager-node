@@ -54,6 +54,12 @@ const UserSchema = new Schema({
     }]
 });
 
+UserSchema.virtual('tasks', {
+    ref: 'Task',
+    localField: '_id',
+    foreignField: 'owner'
+});
+
 // ==========================================
 // Definición del Middleware para el schema:
 // ==========================================

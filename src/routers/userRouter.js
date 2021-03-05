@@ -37,6 +37,7 @@ router.get('/users/me', auth, async (req, res) => {
     res.send(req.user);
 });
 
+// Logout (eliminar 1 token)
 router.post('/users/logout', auth, async (req, res) => {
     try {
         // Removemos el token del arreglo de tokens:
@@ -62,7 +63,18 @@ router.post('/users/logout', auth, async (req, res) => {
         res.send();
 
     } catch (error) {
-        req.status(500).send();
+        req.status(500).send({ error: 'deauth error' });
+    }
+});
+
+// Logout all (eliminar todas las sesiones)
+router.post('/users/logoutAll', auth, async (req, res) => {
+    try {
+        req.user.tokens = [];
+        await req.user.save();
+        res.send();
+    } catch (error) {
+        res.status(500).send({ error: 'Error in deatuhenticate all tokens!' });
     }
 });
 

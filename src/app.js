@@ -24,3 +24,7 @@ app.use(taskRouter);
 app.listen(PORT, () => {
     console.log('Listening on port: ', PORT);
 });
+
+
+//Ejempo de relación:
+const Task = require('./models/Task');

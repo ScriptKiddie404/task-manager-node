@@ -13,7 +13,8 @@ const TaskSchema = new Schema({
     },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true
+        required: true,
+        ref: 'User' //Creamos la relación con el Usuario de la tarea
     }
 });
 

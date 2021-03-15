@@ -16,6 +16,8 @@ const TaskSchema = new Schema({
         required: true,
         ref: 'User' //Creamos la relación con el Usuario de la tarea
     }
+}, {
+    timestamps: true
 });
 
 
